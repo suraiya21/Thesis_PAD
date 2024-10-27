@@ -95,7 +95,7 @@ class Spoofing_train(Dataset):
         
 
         #image_x, map_x = self.get_single_image_x(image_dir, video_name, spoofing_label)
-        '''if spoofing_label == 1:
+        if spoofing_label == 1:
             #print(video_name)
             #if (video_name.find('/1_3_mobai_collected/Train/1_bonafide_crop_rgb/') != -1 or video_name.find('/2_4_CASIA_Anti/Tain/1_bonafide_crop_rgb/') != -1 or video_name.find('/3_1_ntnu_evaluation/Train/1_bonafide_crop_rgb/') != -1 or video_name.find('/4_6_oulu/Train/1_bonafide_crop_rgb/') != -1 or video_name.find('/5_5_NBL/Train/1_bonafide_crop_rgb/') != -1):
             video_name_temp = video_name
@@ -104,72 +104,16 @@ class Spoofing_train(Dataset):
             #map_tail = list(map_tail)
             
             
-            if('TrainingPro_Bona' in video_name_temp):
-                #print(video_name)
-                
-                #map_tail[1] = map_tail[1].replace(".bmp",'')
-                #map_tail[1] = map_tail[1].replace(".png",'')
-                #map_name = "{}/{}_depth.jpg".format(map_tail[0], map_tail[1])
-                map_name = video_name_temp.replace("RGB", "Depth")
-                #map_x = self.get_single_image_x(map_name)
-                #map_name = map_name.replace(".bmp", "_depth.jpg")
-                #print(map_name)
-            if('SynthASpoof' in video_name_temp):
-                
-                map_name = video_name_temp.replace("Mobai_Data_RGB", "Mobai_Data_Depth")
-                #print("xxxxxxxxxxxxx")
 
-                #print(map_name)
-                #image_x_temp = cv2.imread(map_name)
-            #print('###')
             
-            if('Datatang_2' in video_name_temp):
-                map_name = video_name_temp.replace("3D_RGB", "3D_Depth")
-                map_name = map_name.replace("_color", "_depth")
-
-            if('Datatang_1' in video_name_temp):
-                
-                map_name = video_name_temp.replace("Combine_Datatang_RGB", "Combine_Datatang_Depth")
-                map_name = map_name.replace("_normal", "_depth")
-                
-                
-            if('Datatang_3' in video_name_temp):
-                
-                map_name = video_name_temp.replace("Frames_live_crop_v2", "Frames_live_crop_v2_depth")
-                #map_name = map_name.replace("_normal", "_depth")
-                
-            if('Mobai_1' in video_name_temp):
-                
-                map_name = video_name_temp.replace("Frames_live_crop_combine", "Frames_live_crop_combine_Depth")
-                
-                
-            #if('7_WMCA' in video_name_temp):
-                
-            #    map_name = video_name_temp.replace("7_WMCA_rgb_224", "7_WMCA_depth_224")
-                #map_name = map_name.replace("_normal", "_depth")
-            
-            if('4_6_oulu' in video_name_temp or "5_5_NBL" in video_name_temp or "3_1_ntnu_evaluation" in video_name_temp):
+            if('4_6_oulu' in video_name_temp or "2_4_CASIA_Anti" in video_name_temp):
                 
                 map_name = video_name_temp.replace("1_bonafide_crop_rgb", "2_bonafide_crop_depth")
                 map_name = map_name.replace(".bmp", "_depth.jpg")
                 #map_name = map_name.replace("_normal", "_depth")
             
             
-            
-                
-                
-            if('Mobai_2' in video_name_temp):
-                
-                map_name = video_name_temp.replace("Mobai_2_rgb", "Mobai_2_depth")
-                #map_name = map_name.replace("_normal", "_depth")
-            #cv2.imwrite('temp.jpg', image_x_temp)
-            
-            
-            
-            if('Mobai_4' in video_name_temp):
-                
-                map_name = video_name_temp.replace("Mobai_4_rgb", "Mobai_4_depth")
-            
+
             
             
             
@@ -193,8 +137,8 @@ class Spoofing_train(Dataset):
                 
            
             
-        #else:
-        map_x = self.get_single_image_x_zero()
+        else:
+            map_x = self.get_single_image_x_zero()
                 
                 
             
@@ -263,9 +207,9 @@ class Spoofing_train(Dataset):
     def get_single_image_x_zero(self):
         
         
-        #random = np.random.randint(200, 240)
-        zero=0
-        image_x = np.full((self.map_size, self.map_size, 3), zero).astype(np.uint8)
+        random = np.random.randint(200, 240)
+        #zero=0
+        image_x = np.full((self.map_size, self.map_size, 3), random).astype(np.uint8)
 
         # RGB
         #image_x_temp = cv2.imread(image_path)
@@ -302,72 +246,7 @@ class Spoofing_train(Dataset):
         # data augment from 'imgaug' --> Add (value=(-40,40), per_channel=True), GammaContrast (gamma=(0.5,1.5))
         #image_x_aug = seq.augment_image(image_x) 
         
-        '''image_x_temp_gray = cv2.imread(image_path, 0)
-        image_x_temp_gray = cv2.resize(image_x_temp_gray, (28, 28))
-        for i in range(28):
-            for j in range(28):
-                if image_x_temp_gray[i,j]>0:
-                    binary_mask[i,j]=1
-                else:
-                    binary_mask[i,j]=0'''
-        
         return image_x, binary_mask
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
-    '''def get_single_image_x(self, image_dir, video_name, spoofing_label):
-        frames_total = len(glob(os.path.join(image_dir, "*.jpg")))
-        map_dir = os.path.join(self.map_root_dir, video_name)
-        for temp in range(500):
-            image_id = np.random.randint(0, frames_total-1)
-            image_name = "{}_{}_scene.jpg".format(video_name, image_id)
-            image_path = os.path.join(image_dir, image_name)
-            if spoofing_label==1:
-                map_name = "{}_{}_depth1D.jpg".format(video_name, image_id)
-                map_path = os.path.join(map_dir, map_name)
-                if os.path.exists(image_path) and os.path.exists(map_path):
-                    image_x_temp = cv2.imread(image_path)
-                    map_x_temp = cv2.imread(map_path, 0)
-                    if os.path.exists(image_path) and (image_x_temp is not None) and (map_x_temp is not None):
-                        break
-            else:
-                if os.path.exists(image_path):
-                    image_x_temp = cv2.imread(image_path)
-                    if os.path.exists(image_path) and (image_x_temp is not None):
-                        break
-        face_scale = np.random.randint(int(self.scale_down*10), int(self.scale_up*10))
-        face_scale = face_scale/10.0
-        if spoofing_label == 1:
-            map_x = cv2.resize(crop_face_from_scene(map_x_temp, face_scale), (self.map_size, self.map_size))
-        else:
-            map_x = np.zeros((self.map_size, self.map_size))
-        # RGB
-        try:
-            image_x_temp = cv2.imread(image_path)
-            image_x = cv2.resize(crop_face_from_scene(image_x_temp, face_scale), (self.img_size, self.img_size))
-        except:
-            print(image_path)
-        return image_x, map_x'''

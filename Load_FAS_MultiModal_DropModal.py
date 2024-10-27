@@ -34,9 +34,9 @@ class Cutout(object):
         self.length = length
 
     def __call__(self, sample):
-        img, image_x_depth, image_x_ir, spoofing_label, map_x1 = sample['image_x'],sample['image_x_depth'],sample['image_x_ir'],sample['spoofing_label'],sample['map_x1']
+        img, image_x_depth, spoofing_label = sample['image_x'],sample['image_x_depth'],sample['spoofing_label']
         h, w = img.shape[1], img.shape[2]    # Tensor [1][2],  nparray [0][1]
-        mask = np.ones((h, w), np.float32)
+        mask = np.ones((h, w), np.long)
         y = np.random.randint(h)
         x = np.random.randint(w)
         length_new = np.random.randint(1, self.length)
@@ -51,9 +51,9 @@ class Cutout(object):
         mask = mask.expand_as(img)
         img *= mask
         image_x_depth *= mask
-        image_x_ir *= mask
+        #image_x_ir *= mask
         
-        return {'image_x': img, 'image_x_depth': image_x_depth, 'image_x_ir': image_x_ir, 'spoofing_label': spoofing_label, 'map_x1': map_x1}
+        return {'image_x': img, 'image_x_depth': image_x_depth, 'spoofing_label': spoofing_label}
 
 
 class Normaliztion(object):
@@ -62,22 +62,22 @@ class Normaliztion(object):
         image = (image - 127.5)/128
     """
     def __call__(self, sample):
-        image_x, image_x_depth, image_x_ir, spoofing_label, map_x1 = sample['image_x'],sample['image_x_depth'],sample['image_x_ir'],sample['spoofing_label'],sample['map_x1']
+        image_x, image_x_depth, spoofing_label= sample['image_x'],sample['image_x_depth'],sample['spoofing_label']
         new_image_x = (image_x - 127.5)/128     # [-1,1]
         new_image_x_depth = (image_x_depth - 127.5)/128     # [-1,1]
-        new_image_x_ir = (image_x_ir - 127.5)/128     # [-1,1]
-        return {'image_x': new_image_x, 'image_x_depth': new_image_x_depth, 'image_x_ir': new_image_x_ir, 'spoofing_label': spoofing_label, 'map_x1': map_x1}
+        #new_image_x_ir = (image_x_ir - 127.5)/128     # [-1,1]
+        return {'image_x': new_image_x, 'image_x_depth': new_image_x_depth, 'spoofing_label': spoofing_label}
 
 
 
 class RandomHorizontalFlip(object):
     """Horizontally flip the given Image randomly with a probability of 0.5."""
     def __call__(self, sample):
-        image_x, image_x_depth, image_x_ir, spoofing_label, map_x1 = sample['image_x'],sample['image_x_depth'],sample['image_x_ir'],sample['spoofing_label'],sample['map_x1']
+        image_x, image_x_depth, spoofing_label = sample['image_x'],sample['image_x_depth'],sample['spoofing_label']
         
         new_image_x = np.zeros((224, 224, 3))
         new_image_x_depth = np.zeros((224, 224, 3))
-        new_image_x_ir = np.zeros((224, 224, 3))
+        #new_image_x_ir = np.zeros((224, 224, 3))
 
         p = random.random()
         if p < 0.5:
@@ -85,13 +85,13 @@ class RandomHorizontalFlip(object):
 
             new_image_x = cv2.flip(image_x, 1)
             new_image_x_depth = cv2.flip(image_x_depth, 1)
-            new_image_x_ir = cv2.flip(image_x_ir, 1)
+            #new_image_x_ir = cv2.flip(image_x_ir, 1)
 
                 
-            return {'image_x': new_image_x, 'image_x_depth': new_image_x_depth, 'image_x_ir': new_image_x_ir, 'spoofing_label': spoofing_label, 'map_x1': map_x1}
+            return {'image_x': new_image_x, 'image_x_depth': new_image_x_depth, 'spoofing_label': spoofing_label}
         else:
             #print('no Flip')
-            return {'image_x': image_x, 'image_x_depth': image_x_depth, 'image_x_ir': image_x_ir, 'spoofing_label': spoofing_label, 'map_x1': map_x1}
+            return {'image_x': image_x, 'image_x_depth': image_x_depth, 'spoofing_label': spoofing_label}
 
 
 
@@ -102,7 +102,7 @@ class ToTensor(object):
     """
 
     def __call__(self, sample):
-        image_x, image_x_depth, image_x_ir, spoofing_label, map_x1 = sample['image_x'],sample['image_x_depth'],sample['image_x_ir'],sample['spoofing_label'],sample['map_x1']
+        image_x, image_x_depth, spoofing_label = sample['image_x'],sample['image_x_depth'],sample['spoofing_label']
         
         # swap color axis because
         # numpy image: (batch_size) x H x W x C
@@ -120,22 +120,22 @@ class ToTensor(object):
             image_x_depth = np.array(image_x_depth)
         
         p1 = random.random()
-        if p1 < 0.5:
+        '''if p1 < 0.5:
             image_x_ir = image_x_ir[:,:,::-1].transpose((2, 0, 1))
             image_x_ir = np.array(image_x_ir)
         else:
             # Blocked modality
             image_x_ir = np.zeros((3, 224, 224))
-            image_x_ir = np.array(image_x_ir)
+            image_x_ir = np.array(image_x_ir)'''
             
         
-        map_x1 = np.array(map_x1)
+       #map_x1 = np.array(map_x1)
                         
-        spoofing_label_np = np.array([0],dtype=np.long)
+        spoofing_label_np = np.array([0],dtype=np.float32)
         spoofing_label_np[0] = spoofing_label
         
         
-        return {'image_x': torch.from_numpy(image_x.astype(np.float)).float(), 'image_x_depth': torch.from_numpy(image_x_depth.astype(np.float)).float(), 'image_x_ir': torch.from_numpy(image_x_ir.astype(np.float)).float(), 'spoofing_label': torch.from_numpy(spoofing_label_np.astype(np.long)).long(), 'map_x1': torch.from_numpy(map_x1.astype(np.float)).float()}
+        return {'image_x': torch.from_numpy(image_x.astype(np.long)).long(), 'image_x_depth': torch.from_numpy(image_x_depth.astype(np.long)).long(), 'spoofing_label': torch.from_numpy(spoofing_label_np.astype(np.long)).long()}
 
 
 # /home/ztyu/FAS_dataset/OULU/Train_images/          6_3_20_5_121_scene.jpg        6_3_20_5_121_scene.dat

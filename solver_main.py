@@ -197,8 +197,7 @@ def main(args):
                 #logits =  model(inputs, inputs_depth, inputs_ir)
             
                 loss_global =  criterion(logits, label.squeeze(-1))
-                #print(label.squeeze(-1))
-                #print(logits)
+
  
              
                 loss =  loss_global
@@ -243,10 +242,6 @@ def main(args):
         }, model_path)
 
         
-        # whole epoch average
-        #print("epoch:{:d}, Train: lr={:f}, Loss={:.4f}".format(epoch + 1, lr, loss_record.avg))
-        #scheduler.step()
-
         # test
         epoch_test = 1
         if epoch % epoch_test == epoch_test-1:
@@ -264,22 +259,6 @@ def main(args):
                 test_set = test_data_dic[test_name]
                 test_loader = DataLoader(test_set, batch_size=args.batch_size, shuffle=True, num_workers=8)
                 HTER, auc_test = test_video(model, args, test_loader, score_path, epoch, name=test_name)
-                #if auc_test-HTER>=eva["best_auc"]-eva["best_HTER"]:
-                #    eva["best_auc"] = auc_test
-                #    eva["best_HTER"] = HTER
-                #    eva["best_epoch"] = epoch+1
-                #model_path = os.path.join(model_root_path, "Flex_{}.pth".format(epoch))
-                #torch.save({
-                #    'epoch': epoch+1,
-                #    'state_dict':model.module.state_dict(),
-                #    'optimizer':optimizer.state_dict(),
-                #    'scheduler':scheduler,
-                #    'args':args,
-                #}, model_path)
-                #print("Model saved to {}".format(model_path))
-                #print("[Best result] epoch:{}, HTER={:.4f}, AUC={:.4f}".format(eva["best_epoch"],  eva["best_HTER"], eva["best_auc"]))
-            
-            #print("Model saved to {}".format(model_path))
 
 
 def test_video(model, args, test_loader, score_root_path, epoch, name=""):
@@ -295,34 +274,18 @@ def test_video(model, args, test_loader, score_root_path, epoch, name=""):
             if num_lines_read == 50: break  # early exit
             num_lines_read += 2  # batch size
             image_x, label= sample_batched["image_x"].cuda(), sample_batched["spoofing_label"].cuda()
-            #print(image_x.size())
-            #image_x = image_x.view(1,image_x.shape[0],image_x.shape[1],image_x.shape[2],image_x.shape[3]).float()
-            #label = label.view(label.shape[0],1)
-            #for frame_i in range(image_x.shape[0]):  #MISTAKEEEE no need this for loop
+
             if args.model_type in ["SSAN_R"]:
                 #print(image_x.shape[1])
                 
                 cls_x1_x1, fea_x1_x1, fea_x1_x2, _ = model(image_x[:,frame_i,:,:,:], image_x[:,frame_i,:,:,:])
                 score_norm = torch.softmax(cls_x1_x1, dim=1)[:, 1]
-                #map_score.append(score_norm)
-                #print(score_norm)
-                #print(label[frame_i][0])
+
                 scores_list.append("{} {}\n".format(score_norm.item(), label[frame_i][0].item()))
             elif args.model_type in ["SSAN_M"]:
-                #pred_map, fea_x1_x1, fea_x1_x2, _ = model(image_x[:,frame_i,:,:,:], image_x[:,frame_i,:,:,:])
-                #optimizer.zero_grad()
-                #print(image_x.size())
+
                 image_x_zeros = torch.zeros((image_x.size())).cuda()
-                #image_x_zeros = sample_batched['image_x_zeros']
-                #print(torch.max(image_x_zeros))
-                #optimizer.zero_grad()
-                #print(image_x_zeros )
-                #print(image_x_zeros.size())
-                
-                #pdb.set_trace()
-                #print(image_x.size())
-                
-                #print(image_x_zeros.size())
+
                 logits  =  model(image_x, image_x_zeros)
                 for test_batch in range(image_x.shape[0]):
                     map_score = 0.0
@@ -340,13 +303,7 @@ def test_video(model, args, test_loader, score_root_path, epoch, name=""):
             
         map_result_val_filename = os.path.join(score_root_path, "{}_result.txt".format(name))
         test_ACC, fpr, FRR, HTER, auc_test, test_err = performances_val(map_score_val_filename)
-        #result.append(test_ACC)
-        #result.append(fpr)
-        
-        #result.append(FRR)
-        #result.append(HTER)
-        #result.append(auc_test)
-        #result.append(test_err)
+
         print("## {} score:".format(name))
         print("epoch:{:d}, test:  val_ACC={:.4f}, HTER={:.4f}, AUC={:.4f}, val_err={:.4f}, ACC={:.4f}".format(epoch+1, test_ACC, HTER, auc_test, test_err, test_ACC))
         print("test phase cost {:.4f}s".format(time.time()-start_time))
