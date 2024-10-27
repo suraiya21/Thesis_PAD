@@ -55,5 +55,3 @@ python test.py
 - **`solver_main.py`**: Main training script.
 - **`utils/`**: Utility functions for data loading, augmentation, and other helpers.
 
-## License
-This project is licensed under the MIT License.
