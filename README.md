@@ -52,7 +52,7 @@ python test.py
 - **`configs/`**: Configuration files for models and training setups.
 - **`datasets/`**: Scripts for dataset processing.
 - **`models/`**: Contains model architectures.
-- **`train_FAS_ViT_AvgPool_CrossAtten_RGBDIR_P1234.py`**: Main training script.
+- **`solver_main.py`**: Main training script.
 - **`utils/`**: Utility functions for data loading, augmentation, and other helpers.
 
 ## License
