@@ -22,7 +22,8 @@ Clone this repository and install required dependencies:
 ```bash
 git clone https://github.com/suraiya21/Thesis_PAD.git
 cd Thesis_PAD
-pip install -r requirements.txt
+conda env create -f env.yaml
+conda activate Fmf
 ```
 
 ## Data Preparation
@@ -36,14 +37,15 @@ Download the dataset and pretrained model files and organize them as follows:
 To train the model, use the following script:
 
 ```bash
-python train_FAS_ViT_AvgPool_CrossAtten_RGBDIR_P1234.py
+python solver_main.py
 ```
 
 ### Testing
 For testing, run:
 
 ```bash
-python Load_FAS_MultiModal_DropModal_test.py
+cd FMF_Test
+python test.py
 ```
 
 ## Project Structure
