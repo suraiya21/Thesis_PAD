@@ -1,0 +1,10 @@
+2022-10-31 23:23:40,019 - Log path:./face_log/FE/
+2022-10-31 23:23:40,019 - Training Protocol
+2022-10-31 23:23:40,019 - Epoch Total number:10
+2022-10-31 23:23:40,019 - Batch Size is 16.00
+2022-10-31 23:23:40,019 - Shuffle Data for Training is True
+2022-10-31 23:23:40,019 - Training set is Mobai_Train
+2022-10-31 23:23:40,019 - Test set is Mobai_Test
+2022-10-31 23:23:40,019 - Face related work is Face_Expression_Recognition
+2022-10-31 23:23:40,019 - Graph type is Step_by_Step_Graph
+2022-10-31 23:23:40,019 - savedir:./save_models/

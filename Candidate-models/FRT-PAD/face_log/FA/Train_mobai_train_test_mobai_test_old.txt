@@ -1,0 +1,22 @@
+2022-09-28 11:50:28,678 - Log path:./face_log/FA/
+2022-09-28 11:50:28,679 - Training Protocol
+2022-09-28 11:50:28,680 - Epoch Total number:100
+2022-09-28 11:50:28,680 - Batch Size is 16.00
+2022-09-28 11:50:28,680 - Shuffle Data for Training is True
+2022-09-28 11:50:28,681 - Training set is Mobai_Train
+2022-09-28 11:50:28,681 - Test set is Mobai_Test
+2022-09-28 11:50:28,681 - Face related work is Face_Attribute_Editing
+2022-09-28 11:50:28,682 - Graph type is Step_by_Step_Graph
+2022-09-28 11:50:28,682 - savedir:./save_models/
+2022-09-28 11:54:43,352 - 0.033   0.000  100.000  100.000  |   0.000  100.000  100.000  |
+2022-09-28 11:56:50,219 - Log path:./face_log/FR/
+2022-09-28 11:56:50,220 - Training Protocol
+2022-09-28 11:56:50,220 - Epoch Total number:100
+2022-09-28 11:56:50,221 - Batch Size is 16.00
+2022-09-28 11:56:50,221 - Shuffle Data for Training is True
+2022-09-28 11:56:50,221 - Training set is Mobai_Train
+2022-09-28 11:56:50,221 - Test set is Mobai_Test
+2022-09-28 11:56:50,222 - Face related work is Face_Recognition
+2022-09-28 11:56:50,222 - Graph type is Step_by_Step_Graph
+2022-09-28 11:56:50,223 - savedir:./save_models/
+2022-09-28 12:01:50,878 - 0.033  12.500  98.438  87.500  |  12.500  98.438  87.500  |

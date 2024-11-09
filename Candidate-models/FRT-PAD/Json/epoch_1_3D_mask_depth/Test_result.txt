@@ -1,0 +1,1 @@
+test_ACC: 1.0 fpr: 0.0 FRR: nan HTER: nan AUC_test: nantest_ERROR: 0.0
