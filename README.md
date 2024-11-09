@@ -16,6 +16,9 @@ This repository supports **Presentation Attack Detection (PAD)** research, featu
 ## Overview
 The **Thesis_PAD** project focuses on developing deep learning methods for detecting presentation attacks using multi-modal datasets. The repository includes all necessary scripts and configurations to support PAD training and evaluation workflows.
 
+## Remote Identity Proofing Process
+![Method](1.png)
+
 ## Installation
 Clone this repository and install required dependencies:
 
